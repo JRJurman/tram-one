@@ -1,7 +1,7 @@
 const HoverEngine = require('hover-engine')
 const urlListener = require('url-listener')
 
-const {TRAM_STATE_ENGINE, TRAM_GLOBAL_STATE_ENGINE, TRAM_EFFECT_STORE, TRAM_HOOK_KEY, TRAM_RENDER_LOCK, TRAM_EFFECT_QUEUE} = require('../engine-names')
+const {TRAM_STATE_ENGINE, TRAM_GLOBAL_STATE_ENGINE, TRAM_EFFECT_STORE, TRAM_HOOK_KEY, TRAM_RENDER_LOCK, TRAM_EFFECT_QUEUE, TRAM_REF_STORE} = require('../engine-names')
 const {setup, get} = require('../namespace')
 const {setupEffectStore} = require('../effect-store')
 const {mount} = require('../mount')
@@ -39,6 +39,9 @@ const start = globalSpace => {
 
 	// setup queue for new effects when resolving mounts
 	setupEffectStore(globalSpace, TRAM_EFFECT_QUEUE)
+
+	// setup store for effects
+	setupEffectStore(globalSpace, TRAM_REF_STORE)
 
 	// setup working key for hooks
 	setupWorkingKey(globalSpace, TRAM_HOOK_KEY)

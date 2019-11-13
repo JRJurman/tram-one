@@ -1,5 +1,5 @@
 const {registerHtml, registerSvg} = require('../dom')
-const {useEffect, useState, useUrlParams, useGlobalState} = require('../hooks')
+const {useEffect, useState, useUrlParams, useGlobalState, useRef} = require('../hooks')
 const {start} = require('../start')
 
 /**
@@ -37,5 +37,6 @@ module.exports = {
 	useState: useState(globalSpace),
 	useGlobalState: useGlobalState(globalSpace),
 	useUrlParams: useUrlParams(),
+	useRef: useRef(globalSpace),
 	start: start(globalSpace)
 }
