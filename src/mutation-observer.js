@@ -27,14 +27,16 @@ const processEffects = node => {
 			// this is called when an effect is re-triggered
 			const effectReaction = observe(() => {
 				// verify that cleanup is a function before calling it (in case it was a promise)
-				if (typeof cleanup === 'function') cleanup()
-				cleanup = effect()
+				if (typeof cleanup === 'function') cleanup(node)
+				// effects (and cleanups) are passed in the instance of the node
+				// this substitutes the need for useRef, allowing access to the element
+				cleanup = effect(node)
 			})
 
 			// this is called when a component with an effect is removed
 			const totalCleanup = () => {
 				// verify that cleanup is a function before calling it (in case it was a promise)
-				if (typeof cleanup === 'function') cleanup()
+				if (typeof cleanup === 'function') cleanup(node)
 				unobserve(effectReaction)
 			}
 
