@@ -1,5 +1,5 @@
 const ensureFunction = require('type/function/ensure')
-const ensureValue = require('type/value/ensure')
+const ensureObject = require('type/plain-object/is')
 const { startWatcher } = require('./mutation-observer')
 const { registerHtml } = require('./dom-wrappers')
 const { TRAM_MUTATION_OBSERVER } = require('./engine-names')
@@ -7,15 +7,15 @@ const { TRAM_MUTATION_OBSERVER } = require('./engine-names')
 /**
  * @private
  * @description
- * Updates a selector with an initial component for the first render.
+ * Updates a container with an initial component for the first render.
  */
-module.exports = (selector, component) => {
-	ensureValue(selector, { errorMessage: `Tram-One: selector should be defined as a CSS Selector or DOM Node, recieved ${selector}` })
-	ensureFunction(component, { errorMessage: `Tram-One: component should be a function, recieved ${typeof selector}, ${selector}` })
+module.exports = (component, container) => {
+	ensureFunction(component, { errorMessage: `Tram-One: component should be a function, recieved ${typeof component}, ${component}` })
+	ensureObject(container, { errorMessage: `Tram-One: container should be defined as a CSS Selector or DOM Node, recieved ${typeof container}, ${container}` })
 
 	// if the selector is a string, try to find the element,
 	// otherwise it's probably DOM that we should write directly to
-	const target = (typeof selector) === 'string' ? document.querySelector(selector) : selector
+	const target = (typeof container) === 'string' ? document.querySelector(container) : container
 	if (target === null) {
 		console.error('Tram-One: could not find target, is the element on the page yet?')
 		return

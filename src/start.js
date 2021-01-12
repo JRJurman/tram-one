@@ -14,10 +14,10 @@ const { setupMutationObserver } = require('./mutation-observer')
  *
  * This should only be called for the initial render / building of the app.
  *
- * @param {string|Node} selector either a CSS selector, or Node to attach the component to
  * @param {function} component top-level component to attach to the page.
+ * @param {string|Node} container either a CSS selector, or Node to attach the component to
  */
-module.exports = (selector, component) => {
+module.exports = (component, container) => {
 	/* setup all the internal engines required for tram-one to work */
 
 	// setup store for effects
@@ -36,5 +36,5 @@ module.exports = (selector, component) => {
 	setupMutationObserver(TRAM_MUTATION_OBSERVER)
 
 	// trigger an initial mount
-	mount(selector, component)
+	mount(component, container)
 }

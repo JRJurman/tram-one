@@ -1,4 +1,6 @@
+const ensureObject = require('type/object/ensure')
 const { raw } = require('@nx-js/observer-util')
+
 const { TRAM_OBSERVABLE_STORE, TRAM_HOOK_KEY } = require('./engine-names')
 const { getObservableStore } = require('./observable-store')
 const { getWorkingKeyValue, incrementWorkingKeyBranch } = require('./working-key')
@@ -13,6 +15,9 @@ const { getWorkingKeyValue, incrementWorkingKeyBranch } = require('./working-key
  * It has a similar interface to React's useState
  */
 module.exports = (key, value) => {
+	// values must be objects
+	ensureObject(value, { errorMessage: `Tram-One: value should be an object, recieved ${typeof value}, ${value}` })
+
 	// get the store of effects
 	const observableStore = getObservableStore(TRAM_OBSERVABLE_STORE)
 
@@ -32,15 +37,9 @@ module.exports = (key, value) => {
 	// get value for key
 	const keyValue = observableStore[resolvedKey]
 
-	// generate setter for key
-	// Note: for objects and arrays, it is more performant to update the fields direclty
-	const keySetter = newValue => {
-		observableStore[resolvedKey] = newValue
-	}
-
 	// generate the raw value, in the rare case that this is required
 	const rawValue = raw(keyValue)
 
-	// return value, setter, and raw value for the key
-	return [keyValue, keySetter, rawValue]
+	// return value, and raw value for the key
+	return [keyValue, rawValue]
 }
